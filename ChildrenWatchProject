@@ -1,0 +1,38 @@
+# Smart Bracelet Architecture Diagram (Text-based Description)
+
+# System Architecture:
+#
+# +-----------------+          BLE         +-----------------+
+# |  PineTime Watch | <------------------> |      Laptop     |
+# | (HR, BP sensors)|                     |  (BLE Receiver) |
+# +-----------------+                     +-----------------+
+#         |                                        |
+#         | Signal Readings (HR, BP, Motion)       |
+#         |                                        |
+#         v                                        v
+# +--------------------------------------------------------+
+# |                  Python Processing Script              |
+# | - Analyze signals                                      |
+# | - Detect abnormal heart rate or falls                 |
+# | - Trigger alerts                                       |
+# +--------------------------------------------------------+
+#         |                                        |
+#         | SMS Alert (via Twilio API)            | Voice Playback
+#         v                                        v
+# +----------------+                    +--------------------------+
+# |  Emergency SMS |                    | Voice Alert System (PC) |
+# |  to Guardian   |                    | e.g. "Are you okay?"     |
+# +----------------+                    +--------------------------+
+
+# Python Tools:
+# - bleak (BLE communication)
+# - numpy/pandas (data analysis)
+# - Twilio (SMS alerts)
+# - playsound or pygame (audio alert)
+
+# Flow:
+# 1. Connect to PineTime via BLE
+# 2. Read sensor data
+# 3. Analyze real-time changes in heart rate
+# 4. If anomaly detected, send SMS and play voice
+# 5. Log all events for future analysis
