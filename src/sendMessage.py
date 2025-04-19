@@ -11,9 +11,9 @@ from twilio.rest import Client
 
 # --- CONFIGURATION ---
 # Fill these with your info
-TWILIO_SID = 'AC478082086a5d29b71da33892c9dcbf61'
-TWILIO_AUTH_TOKEN = '480811c6b73aed0703967dcc4666deb2'
-TWILIO_PHONE_NUMBER = '+16052502867'  # Your Twilio phone number
+TWILIO_SID = 'TWILIO_SID'
+TWILIO_AUTH_TOKEN = 'TWILIO_Token'
+TWILIO_PHONE_NUMBER = 'TWILLIO_Phone_number'  # Your Twilio phone number
 GMAIL_USER = 'your_email@gmail.com'
 GMAIL_PASSWORD = 'your_app_password'
 KID_NAME= 'John Doe'  # Replace with the actual kid's name
