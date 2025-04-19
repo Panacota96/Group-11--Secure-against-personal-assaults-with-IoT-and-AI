@@ -1,18 +1,22 @@
 #2  To send an SMS, we’ll use Twilio. For email, we’ll use smtplib and a Gmail SMTP server.
-
-
-
+#3  Make sure to install the required libraries:
+# pip install twilio
+#4  You also need to enable "Less secure app access" in your Gmail account settings or use an App Password if you have 2FA enabled.
+#5  This script will send an SMS or an email based on the method you choose.
+#6  Make sure to replace the placeholders with your actual credentials.
+#7  This script is a simple example and does not include error handling or logging for production use.
 import smtplib
 from email.mime.text import MIMEText
 from twilio.rest import Client
 
 # --- CONFIGURATION ---
 # Fill these with your info
-TWILIO_SID = 'your_twilio_sid'
-TWILIO_AUTH_TOKEN = 'your_twilio_auth_token'
-TWILIO_PHONE_NUMBER = '+1234567890'
+TWILIO_SID = 'AC478082086a5d29b71da33892c9dcbf61'
+TWILIO_AUTH_TOKEN = '480811c6b73aed0703967dcc4666deb2'
+TWILIO_PHONE_NUMBER = '+16052502867'  # Your Twilio phone number
 GMAIL_USER = 'your_email@gmail.com'
 GMAIL_PASSWORD = 'your_app_password'
+KID_NAME= 'John Doe'  # Replace with the actual kid's name
 
 # --- SEND SMS ---
 def send_sms(to_number, message):
@@ -51,10 +55,10 @@ def notify_user(method, recipient, subject_or_message, message=None):
     else:
         print("Unsupported method. Use 'sms' or 'email'.")
 
-# --- EXAMPLE USAGE ---
+
 if __name__ == "__main__":
     # SMS example
-    # notify_user('sms', '+11234567890', 'This is a test SMS from GitHub project.')
+    notify_user('sms', '+33774929723', 'ALERT: {KID_NAME} is in Danger!')
 
     # Email example
     # notify_user('email', 'recipient@example.com', 'Test Subject', 'This is the email body.')
