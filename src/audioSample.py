@@ -3,7 +3,7 @@ from scipy.io.wavfile import write
 import os
 from datetime import datetime
 
-def record_audio(duration=5, sample_rate=44100, folder='audio_samples', channels=1):
+def record_audio(duration=5, sample_rate=44100, folder='audio_samples', channels=2):
     """
     Records audio from the default microphone and saves it to the specified folder.
     
@@ -19,6 +19,7 @@ def record_audio(duration=5, sample_rate=44100, folder='audio_samples', channels
     # Create folder if it doesn't exist
     if not os.path.exists(folder):
         os.makedirs(folder)
+
 
     # Record audio
     print(f"Recording for {duration} seconds with {channels} channel(s)...")
