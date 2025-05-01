@@ -11,8 +11,8 @@ from twilio.rest import Client
 
 # --- CONFIGURATION ---
 # Fill these with your info
-TWILIO_SID = 'AC478082086a5d29b71da33892c9dcbf61'
-TWILIO_AUTH_TOKEN = 'bfaa6f52f018cc5ce364620fbdee82f9'
+TWILIO_SID = 'CHANGE'
+TWILIO_AUTH_TOKEN = 'CHANGE'
 TWILIO_PHONE_NUMBER = '+16052502867'  # Your Twilio phone number
 GMAIL_USER = 'your_email@gmail.com'
 GMAIL_PASSWORD = 'your_app_password'
