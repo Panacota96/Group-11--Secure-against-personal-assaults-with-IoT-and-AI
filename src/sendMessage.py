@@ -11,9 +11,9 @@ from twilio.rest import Client
 
 # --- CONFIGURATION ---
 # Fill these with your info
-TWILIO_SID = 'TWILIO_SID'
-TWILIO_AUTH_TOKEN = 'TWILIO_Token'
-TWILIO_PHONE_NUMBER = 'TWILLIO_Phone_number'  # Your Twilio phone number
+TWILIO_SID = 'AC478082086a5d29b71da33892c9dcbf61'
+TWILIO_AUTH_TOKEN = 'bfaa6f52f018cc5ce364620fbdee82f9'
+TWILIO_PHONE_NUMBER = '+16052502867'  # Your Twilio phone number
 GMAIL_USER = 'your_email@gmail.com'
 GMAIL_PASSWORD = 'your_app_password'
 KID_NAME= 'John Doe'  # Replace with the actual kid's name
@@ -31,7 +31,7 @@ def send_sms(to_number, message):
     except Exception as e:
         print(f"Failed to send SMS: {e}")
 
-# --- SEND EMAIL ---
+# --- SEND EMAIL ---  #  Lo on the mail for parents
 def send_email(to_email, subject, message):
     try:
         msg = MIMEText(message)
@@ -58,7 +58,7 @@ def notify_user(method, recipient, subject_or_message, message=None):
 
 if __name__ == "__main__":
     # SMS example
-    notify_user('sms', '+33774929723', 'ALERT: {KID_NAME} is in Danger!')
+    notify_user('sms', '+33638925598', 'ALERT: {KID_NAME} is in Danger!')
 
     # Email example
     # notify_user('email', 'recipient@example.com', 'Test Subject', 'This is the email body.')
