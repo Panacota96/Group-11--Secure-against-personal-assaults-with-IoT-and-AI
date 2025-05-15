@@ -158,3 +158,13 @@ Battery	All-week 180 mAh battery
 2-pin USB charging dock
 
 
+
+
+####### [text](src/sendMessage.py) #####
+
+
+The provided code is a Python module designed to send notifications via SMS and email. It begins by importing necessary libraries, including modules for environment variable management, logging, email handling, and the Twilio API for SMS. The module loads configuration values such as API keys, phone numbers, and email credentials from a .env file located in the same directory as the script. This approach keeps sensitive information out of the source code and allows for easy configuration changes.
+
+Logging is set up to provide timestamped messages for both normal operations and error reporting, which helps with debugging and monitoring. The send_sms function uses the Twilio API to send SMS messages, handling exceptions and logging any errors that occur. Similarly, the send_email function sends emails using Gmail's SMTP server over SSL, requiring an app password for authentication. Both functions are designed to be reusable and handle their own error reporting.
+
+The notify_user function acts as a dispatcher, determining whether to send an SMS or an email based on the provided method argument. It ensures that all required parameters are present and logs errors for unsupported methods or missing information. Finally, when the script is run directly, it demonstrates usage by sending an example SMS and email alert using the configured environment variables, making it easy to test the notification system. This modular and configurable design makes the code suitable for integration into larger alerting or monitoring systems.
