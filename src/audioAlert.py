@@ -1,5 +1,19 @@
 import os
 import pygame
+"""
+audioAlert.py
+This module provides functionality to play audio alert files using the pygame library.
+Functions:
+    play_audio(file_path):
+        Plays the specified audio file (.mp3) using pygame's mixer module.
+        - Checks if the file exists before attempting to play.
+        - Handles errors related to file loading and playback.
+        - Waits until the audio playback is finished before quitting the mixer.
+Example Usage:
+    When run as a script, the module searches for the first .mp3 file in the 'AlertMessage' folder
+    and plays it as an alert. If no audio file is found, it prints an error message and exits.
+"""
+
 
 
 def play_audio(file_path):

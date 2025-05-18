@@ -1,4 +1,11 @@
 import os
+import logging
+from pathlib import Path
+from dotenv import load_dotenv
+import smtplib
+from email.mime.text import MIMEText
+from twilio.rest import Client
+
 """
 sendMessage.py
 This module provides functionality to send notifications via SMS (using Twilio) and email (using Gmail SMTP).
@@ -23,12 +30,6 @@ Example Usage:
     Run the script directly to send example SMS and email alerts using the configured environment variables.
 """
 
-import logging
-from pathlib import Path
-from dotenv import load_dotenv
-import smtplib
-from email.mime.text import MIMEText
-from twilio.rest import Client
 
 
 
