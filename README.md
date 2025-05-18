@@ -96,15 +96,6 @@ ________________________________________
 •	Realistic test scenarios using sample datasets
 •	Alerts simulation: sound and SMS under test conditions
 •	Video giving the set-up of the work we are going to do
-________________________________________
-
-
-
-
-
-
-
-
 
 11. Project Budget (Cost Table in EUR)
 Item	Quantity	Unit Cost (€)	Total Cost (€)	Notes
@@ -131,10 +122,6 @@ Electronic Engineer	Configure smartwatch and BLE connections.
 Cybersecurity Engineer	Secure communication, signal analysis
 IoT & Industrial Engineer 	Python integration, alerts, and system logic
 
- 
-
-
-
 Features and Specifications
 	
 Display	Square 1.3-inch 240×240 IPS capacitive touch display
@@ -157,14 +144,51 @@ Storage	4 MB of User Storage 0.5 MB of OS Storage
 Battery	All-week 180 mAh battery
 2-pin USB charging dock
 
+## Required Python Libraries
 
+To run the modules in this project, you need the following Python libraries:
 
+- numpy
+- pandas
+- scikit-learn
+- opencv-python
+- tensorflow
+- keras
+- tf-keras
+- flask
+- requests
+- sounddevice
+- scipy
+- pygame
+- python-dotenv
+- twilio
+- speechrecognition
+- pyannote.audio
+- sentence-transformers
+- librosa
+- torch
+- torchaudio
+- transformers
 
-####### [text](src/sendMessage.py) #####
+Install all dependencies at once with:
 
+```sh
+pip install -r src/requirements.txt
+```
 
-The provided code is a Python module designed to send notifications via SMS and email. It begins by importing necessary libraries, including modules for environment variable management, logging, email handling, and the Twilio API for SMS. The module loads configuration values such as API keys, phone numbers, and email credentials from a .env file located in the same directory as the script. This approach keeps sensitive information out of the source code and allows for easy configuration changes.
+## Module Summaries
 
-Logging is set up to provide timestamped messages for both normal operations and error reporting, which helps with debugging and monitoring. The send_sms function uses the Twilio API to send SMS messages, handling exceptions and logging any errors that occur. Similarly, the send_email function sends emails using Gmail's SMTP server over SSL, requiring an app password for authentication. Both functions are designed to be reusable and handle their own error reporting.
+### Audio Sample Module (`src/audioSample.py`)
+Enables audio recording from the default microphone and saves the captured audio as a WAV file. Uses the `sounddevice` library for audio capture and `scipy` for saving the file. Useful for collecting audio samples for further analysis, such as speaker verification or speech recognition.
 
-The notify_user function acts as a dispatcher, determining whether to send an SMS or an email based on the provided method argument. It ensures that all required parameters are present and logs errors for unsupported methods or missing information. Finally, when the script is run directly, it demonstrates usage by sending an example SMS and email alert using the configured environment variables, making it easy to test the notification system. This modular and configurable design makes the code suitable for integration into larger alerting or monitoring systems.
+### Audio Alert Module (`src/audioAlert.py`)
+Plays pre-recorded audio alerts (such as emergency messages) using the `pygame` library. Essential for delivering audible alerts in emergency situations as part of the safety monitoring system.
+
+### Send Message Module (`src/sendMessage.py`)
+Sends notifications via SMS (using Twilio) and email (using Gmail SMTP). Loads configuration from a `.env` file, sets up logging, and defines utility functions for sending messages. Designed for integration into alerting or monitoring systems where timely notifications are critical.
+
+### Voice Recognition Module (`src/voiceRecognition.py`)
+Provides advanced voice analysis capabilities using pre-trained models from torchaudio and Hugging Face Transformers. Features include speaker verification, speech quality assessment, speech-to-text transcription, and safe word detection. Essential for robust voice authentication, emergency keyword detection, and audio quality monitoring.
+
+### Threat Detection Module (`src/threatDetection.py`)
+Detects threat-related content in text using sentence embeddings and semantic similarity. Leverages the `sentence-transformers` library to encode both input text and a set of predefined threat phrases. Useful for automated detection of potentially dangerous or threatening language, such as safety monitoring, moderation, or alert systems.
