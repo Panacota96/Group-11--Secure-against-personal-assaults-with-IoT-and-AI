@@ -4,6 +4,7 @@ scikit-learn
 opencv-python
 tensorflow
 keras
+tf-keras
 flask
 requests
 sounddevice
@@ -14,3 +15,7 @@ twilio
 speechrecognition
 pyannote.audio
 sentence-transformers
+librosa
+torch
+torchaudio
+transformers

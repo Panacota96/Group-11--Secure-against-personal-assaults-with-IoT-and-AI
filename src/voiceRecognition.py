@@ -6,6 +6,26 @@ import torchaudio
 import torch.nn.functional as F
 from torchaudio.pipelines import WAV2VEC2_BASE, SQUIM_OBJECTIVE
 from transformers import Wav2Vec2Processor, Wav2Vec2ForCTC
+"""
+voiceRecognition.py
+This module provides functions for speaker verification, speech quality assessment, and automatic speech recognition (ASR) using pre-trained models from torchaudio and Hugging Face Transformers. It enables comparison of speaker embeddings, assessment of audio quality, transcription of speech to text, and detection of safe words in transcriptions.
+Functions:
+    extract_embedding(audio_path):
+        Extracts a speaker embedding from an audio file using a pre-trained Wav2Vec2 model.
+    compare_embeddings(embedding1, embedding2, threshold=0.7):
+        Compares two speaker embeddings using cosine similarity and returns whether they are considered the same speaker.
+    assess_quality(audio_path):
+        Assesses the quality of a speech audio file using the SQUIM model and returns quality metrics.
+    transcribe_audio(audio_path):
+        Transcribes speech from an audio file to text using a pre-trained Wav2Vec2 ASR model.
+    detect_safe_word(transcription, safe_word="help"):
+        Checks if a specified safe word is present in the transcription.
+    is_same_speaker(audio_path1, audio_path2, safe_word="help"):
+        Main function that compares two audio files for speaker similarity, assesses their quality, transcribes the second audio, and detects the safe word.
+Example Usage:
+    Run the module as a script to compare two audio files, assess their quality, transcribe the test sample, and detect the presence of a safe word.
+"""
+
 
 # Load Wav2Vec2 pre-trained model
 bundle = WAV2VEC2_BASE
