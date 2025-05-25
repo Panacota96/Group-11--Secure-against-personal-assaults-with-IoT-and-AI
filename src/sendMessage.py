@@ -1,65 +1,118 @@
-#2  To send an SMS, we’ll use Twilio. For email, we’ll use smtplib and a Gmail SMTP server.
-#3  Make sure to install the required libraries:
-# pip install twilio
-#4  You also need to enable "Less secure app access" in your Gmail account settings or use an App Password if you have 2FA enabled.
-#5  This script will send an SMS or an email based on the method you choose.
-#6  Make sure to replace the placeholders with your actual credentials.
-#7  This script is a simple example and does not include error handling or logging for production use.
+import os
+import logging
+from pathlib import Path
+from dotenv import load_dotenv
 import smtplib
 from email.mime.text import MIMEText
 from twilio.rest import Client
 
-# --- CONFIGURATION ---
-# Fill these with your info
-TWILIO_SID = 'AC478082086a5d29b71da33892c9dcbf61'
-TWILIO_AUTH_TOKEN = '480811c6b73aed0703967dcc4666deb2'
-TWILIO_PHONE_NUMBER = '+16052502867'  # Your Twilio phone number
-GMAIL_USER = 'your_email@gmail.com'
-GMAIL_PASSWORD = 'your_app_password'
-KID_NAME= 'John Doe'  # Replace with the actual kid's name
+"""
+sendMessage.py
+This module provides functionality to send notifications via SMS (using Twilio) and email (using Gmail SMTP).
+It loads configuration from a .env file, sets up logging, and defines utility functions for sending messages.
+Functions:
+    send_sms(to_number: str, message: str) -> None
+        Sends an SMS message to the specified phone number using Twilio API.
+    send_email(to_email: str, subject: str, body: str) -> None
+        Sends an email to the specified address using Gmail SMTP with an App Password.
+    notify_user(method: str, recipient: str, subject_or_message: str, body: str = None)
+        Dispatches a notification to the user via the specified method ('sms' or 'email').
+Environment Variables (loaded from data.env):
+    TWILIO_SID           - Twilio Account SID
+    TWILIO_AUTH_TOKEN    - Twilio Auth Token
+    TWILIO_PHONE_NUMBER  - Twilio phone number to send SMS from
+    GMAIL_USER           - Gmail address to send emails from
+    GMAIL_APP_PASSWORD   - Gmail App Password for SMTP authentication
+    KID_NAME             - Name of the child (used in alert messages)
+    PARENT_PHONE         - Parent's phone number (for SMS alerts)
+    PARENT_EMAIL         - Parent's email address (for email alerts)
+Example Usage:
+    Run the script directly to send example SMS and email alerts using the configured environment variables.
+"""
 
-# --- SEND SMS ---
-def send_sms(to_number, message):
+
+
+
+# Load environment variables from Twillio/data.env
+# ────── LOAD CONFIG ──────
+env_path = Path(__file__).parent /"data.env"
+load_dotenv(dotenv_path=env_path)
+
+print(f"env_path: {env_path}")
+
+# Twilio config
+TWILIO_SID         = os.getenv("TWILIO_SID") 
+TWILIO_AUTH_TOKEN  = os.getenv("TWILIO_AUTH_TOKEN")
+TWILIO_PHONE       = os.getenv("TWILIO_PHONE_NUMBER")
+
+# Gmail config
+GMAIL_USER         = os.getenv("GMAIL_USER")
+GMAIL_APP_PASSWORD = os.getenv("GMAIL_APP_PASSWORD")
+
+# Misc
+KID_NAME           = os.getenv("KID_NAME", "Unknown")
+
+# ────── LOGGING SETUP ──────
+logging.basicConfig(
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    level=logging.INFO
+)
+logger = logging.getLogger(__name__)
+
+# ────── SMS SENDER ──────
+def send_sms(to_number: str, message: str) -> None:
+    """Send an SMS via Twilio."""
     try:
         client = Client(TWILIO_SID, TWILIO_AUTH_TOKEN)
-        message = client.messages.create(
+        msg = client.messages.create(
             body=message,
-            from_=TWILIO_PHONE_NUMBER,
+            from_=TWILIO_PHONE,
             to=to_number
         )
-        print(f"SMS sent to {to_number}: SID {message.sid}")
+        logger.info(f"SMS sent to {to_number} (SID: {msg.sid})")
     except Exception as e:
-        print(f"Failed to send SMS: {e}")
+        logger.exception(f"Failed to send SMS to {to_number}")
 
-# --- SEND EMAIL ---
-def send_email(to_email, subject, message):
+# ────── EMAIL SENDER ──────
+def send_email(to_email: str, subject: str, body: str) -> None:
+    """Send an email via Gmail SMTP SSL using an App Password."""
     try:
-        msg = MIMEText(message)
-        msg['Subject'] = subject
-        msg['From'] = GMAIL_USER
-        msg['To'] = to_email
+        msg = MIMEText(body)
+        msg["Subject"] = subject
+        msg["From"]    = GMAIL_USER
+        msg["To"]      = to_email
 
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
-            server.login(GMAIL_USER, GMAIL_PASSWORD)
-            server.send_message(msg)
-        print(f"Email sent to {to_email}")
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+            smtp.login(GMAIL_USER, GMAIL_APP_PASSWORD)
+            smtp.send_message(msg)
+            logger.info(f"Email sent to {to_email}")
     except Exception as e:
-        print(f"Failed to send email: {e}")
+        logger.exception(f"Failed to send email to {to_email}")
 
-# --- MAIN FUNCTION ---
-def notify_user(method, recipient, subject_or_message, message=None):
-    if method == 'sms':
+# ────── NOTIFICATION DISPATCHER ──────
+def notify_user(method: str, recipient: str, subject_or_message: str, body: str = None):
+    method = method.lower()
+    if method == "sms":
         send_sms(recipient, subject_or_message)
-    elif method == 'email':
-        send_email(recipient, subject_or_message, message)
+    elif method == "email":
+        if body is None:
+            logger.error("Body is required for email notifications.")
+            return
+        send_email(recipient, subject_or_message, body)
     else:
-        print("Unsupported method. Use 'sms' or 'email'.")
+        logger.error("Unsupported method. Use 'sms' or 'email'.")
 
-
+# ────── MAIN EXECUTION ──────
 if __name__ == "__main__":
-    # SMS example
-    notify_user('sms', '+33774929723', 'ALERT: {KID_NAME} is in Danger!')
+    # Example SMS
+    sms_msg = f"ALERT: {KID_NAME} is in Danger!"
+    notify_user("sms", os.getenv("PARENT_PHONE"), sms_msg)
 
-    # Email example
-    # notify_user('email', 'recipient@example.com', 'Test Subject', 'This is the email body.')
-    pass
+    # Example Email
+    subject = f"ALERT: {KID_NAME} is in Danger!"
+    body    = (
+        f"Attention,\n\n"
+        f"{KID_NAME} may be in danger. Please check their status immediately.\n\n"
+        "— Your Alert System"
+    )
+    notify_user("email", os.getenv("PARENT_EMAIL"), subject, body)

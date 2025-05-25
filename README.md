@@ -66,7 +66,6 @@ o	Electronic Engineer with Cybersecurity focus
 o	Cybersecurity Engineer
 o	IoT & Industrial Engineer (you)
 •	Technical Resources:
-o	PineTime Smartwatch
 o	PC with Bluetooth
 o	Twilio account (SMS service)
 o	Audio recordings of family voice
@@ -96,65 +95,58 @@ ________________________________________
 •	Realistic test scenarios using sample datasets
 •	Alerts simulation: sound and SMS under test conditions
 •	Video giving the set-up of the work we are going to do
-________________________________________
-
-
-
-
-
-
-
-
 
 11. Project Budget (Cost Table in EUR)
 Item	Quantity	Unit Cost (€)	Total Cost (€)	Notes
-PineTime Smartwatch	1	32	32	Open-source, programmable
-Twilio SMS Service (Trial or 5€ credit)	1	5	5	To send SMS alerts
-Bluetooth USB Dongle (if needed)	1	8	8	Optional if laptop doesn’t support BLE
 Miscellaneous (cables, adapters, etc.)	1	5	5	Basic hardware setup
 Total Estimated Budget			50 EUR	Most economic solution for rapid prototyping
 ________________________________________
-12. Python Development Guide – PineTime Safety Alert System
-1.	Initial Setup:
-o	Install firmware on PineTime (e.g., InfiniTime).
-o	Ensure BLE connectivity between PineTime and PC.
-2.	Python BLE Setup:
-o	Use the bleak library to connect and read heart rate.
-3.	Signal Analysis:
-o	Use Python logic or machine learning to detect anomalies.
-4.	Alert Trigger:
-o	When heart rate anomaly is detected, use Twilio API to send an SMS.
-o	Play voice alert using play sound with pre-recorded message.
-5.	Division of Labor:
-Member	Task
-Electronic Engineer	Configure smartwatch and BLE connections.
-Cybersecurity Engineer	Secure communication, signal analysis
-IoT & Industrial Engineer 	Python integration, alerts, and system logic
 
- 
+## Required Python Libraries
 
+To run the modules in this project, you need the following Python libraries:
 
+- numpy
+- pandas
+- scikit-learn
+- opencv-python
+- tensorflow
+- keras
+- tf-keras
+- flask
+- requests
+- sounddevice
+- scipy
+- pygame
+- python-dotenv
+- twilio
+- speechrecognition
+- pyannote.audio
+- sentence-transformers
+- librosa
+- torch
+- torchaudio
+- transformers
 
-Features and Specifications
-	
-Display	Square 1.3-inch 240×240 IPS capacitive touch display
-SoC	Low-power Nordic Semiconductor nRF52832
-64 MHz + Floating Point
-Software	Any open-source operating systems built on top of numerous RTOSes
-Body	Dimensions: 37.5mm x 40mm x 11mm
-Weight: 38 grams
-Made with Zinc alloy and plastic
-Dustproof and water-resistant up to 1m (rated at IP67)
-Health Tracking	Step Counting (with Accelerometer)
-Heart rate detection
-Notification features	Notification access
-Wrist vibration
-Quick glance via lift-to-wake.
-Connectivity	Bluetooth 5 and Bluetooth Low Energy
-Compatible with almost any device
-Over-the-air update
-Storage	4 MB of User Storage 0.5 MB of OS Storage
-Battery	All-week 180 mAh battery
-2-pin USB charging dock
+Install all dependencies at once with:
 
+```sh
+pip install -r src/requirements.txt
+```
 
+## Module Summaries
+
+### Audio Sample Module (`src/audioSample.py`)
+Enables audio recording from the default microphone and saves the captured audio as a WAV file. Uses the `sounddevice` library for audio capture and `scipy` for saving the file. Useful for collecting audio samples for further analysis, such as speaker verification or speech recognition.
+
+### Audio Alert Module (`src/audioAlert.py`)
+Plays pre-recorded audio alerts (such as emergency messages) using the `pygame` library. Essential for delivering audible alerts in emergency situations as part of the safety monitoring system.
+
+### Send Message Module (`src/sendMessage.py`)
+Sends notifications via SMS (using Twilio) and email (using Gmail SMTP). Loads configuration from a `.env` file, sets up logging, and defines utility functions for sending messages. Designed for integration into alerting or monitoring systems where timely notifications are critical.
+
+### Voice Recognition Module (`src/voiceRecognition.py`)
+Provides advanced voice analysis capabilities using pre-trained models from torchaudio and Hugging Face Transformers. Features include speaker verification, speech quality assessment, speech-to-text transcription, and safe word detection. Essential for robust voice authentication, emergency keyword detection, and audio quality monitoring.
+
+### Threat Detection Module (`src/threatDetection.py`)
+Detects threat-related content in text using sentence embeddings and semantic similarity. Leverages the `sentence-transformers` library to encode both input text and a set of predefined threat phrases. Useful for automated detection of potentially dangerous or threatening language, such as safety monitoring, moderation, or alert systems.
