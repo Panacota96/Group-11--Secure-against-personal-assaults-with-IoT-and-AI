@@ -8,14 +8,17 @@ from sendMessage import send_sms, send_email, notify_user
 from sendMessage import KID_NAME
 import os
 #from threatDetection import is_threat
-from voiceRecognition import recognize_speech, is_matching_speaker, get_reference_embedding
+from voiceRecognition import is_same_speaker
 
 # Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s [%(levelname)s] %(message)s',
-    handlers=[logging.StreamHandler()]
-)
+def setup_logging():
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s [%(levelname)s] %(message)s',
+        handlers=[logging.StreamHandler()]
+    )
+
+setup_logging()
 logger = logging.getLogger(__name__)
 
 # Example usage of imported functions:

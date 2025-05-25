@@ -41,6 +41,6 @@ if __name__ == "__main__":
     # Example usage of the record_audio function
     duration = 10  # Duration in seconds
     sample_rate = 44100  # Sample rate in Hz
-    folder = 'test_samples'  # Folder to save the audio file
+    folder = 'audio_samples'  # Folder to save the audio file
     # Call the record_audio function
     record_audio(duration=duration, sample_rate=sample_rate, folder=folder)
