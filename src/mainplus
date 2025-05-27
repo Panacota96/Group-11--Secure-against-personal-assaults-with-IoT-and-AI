@@ -1,0 +1,59 @@
+import os
+from voiceRecognition import is_same_speaker
+from threatDetection import is_threat
+from sendMessage import notify_user
+from audioSample import record_audio
+from audioAlert import play_audio
+
+def main():
+    # 1. Record an audio sample
+    print("Starting audio recording...")
+    audio_path = record_audio(duration=10, sample_rate=16000, folder='test_samples', channels=1)
+    
+    # 2. Compare the recorded voice with the reference voice
+    reference_audio = "reference/reference_person.wav"
+    same_speaker, similarity, quality_ref, quality_test, transcription, safe_word_detected = is_same_speaker(reference_audio, audio_path)
+    
+    print(f"Voice comparison: same speaker? {same_speaker} (similarity score: {similarity:.2f})")
+    print(f"Reference audio quality: {quality_ref}")
+    print(f"Test audio quality: {quality_test}")
+    print(f"Transcription: {transcription}")
+    print(f"Safe word detected: {safe_word_detected}")
+    
+    # 3. Detect if there is any threat in the transcription
+    threat_detected = is_threat(transcription)
+    print(f"Threat detected in transcription? {threat_detected}")
+    
+    # 4. Trigger an alert if danger is detected
+    if not same_speaker or threat_detected or safe_word_detected:
+        print("Danger detected! Playing audio alert...")
+        alert_folder = "AlertMessage"
+        # Find the first .mp3 file in the alert folder
+        audio_file = None
+        for file in os.listdir(alert_folder):
+            if file.endswith(".mp3"):
+                audio_file = os.path.join(alert_folder, file)
+                break
+        if audio_file:
+            play_audio(audio_file)
+        else:
+            print("No alert audio file found.")
+        
+        # 5. Send a notification to the parents
+        # Default method is SMS; can be changed to 'email' if needed
+        method = "sms"
+        recipient = os.getenv("PARENT_PHONE") if method == "sms" else os.getenv("PARENT_EMAIL")
+        if recipient:
+            subject_or_message = f"ALERT: {os.getenv('KID_NAME', 'Child')} may be in danger!"
+            body = (f"Detected transcription: {transcription}\n"
+                    f"Threat detected: {threat_detected}\n"
+                    f"Safe word detected: {safe_word_detected}")
+            notify_user(method, recipient, subject_or_message, body if method == "email" else None)
+            print(f"Notification sent via {method} to {recipient}")
+        else:
+            print("Recipient not configured in environment variables.")
+    else:
+        print("No danger detected. Everything is normal.")
+
+if __name__ == "__main__":
+    main()
